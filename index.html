@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Catálogo de jogos digitais para consulta e busca por título."
+    />
+    <title>Catálogo de Jogos Digitais</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="Aplicacao">
+      <header class="Cabecalho">
+        <h1 class="TituloPrincipal">Catálogo de Jogos Digitais</h1>
+        <p class="SubtituloPrincipal">Encontre seu próximo jogo favorito</p>
+
+        <search class="AreaBusca" aria-label="Busca de jogos por título">
+          <label class="RotuloBusca" for="campoBuscaPorTitulo">
+            Buscar por título
+          </label>
+          <input
+            class="CampoBusca"
+            type="search"
+            id="campoBuscaPorTitulo"
+            name="buscaPorTitulo"
+            placeholder="Digite o nome do jogo..."
+            autocomplete="off"
+          />
+        </search>
+      </header>
+
+      <main class="ConteudoPrincipal">
+        <section
+          class="SecaoCatalogo"
+          aria-labelledby="tituloSecaoCatalogo"
+          aria-live="polite"
+        >
+          <h2 id="tituloSecaoCatalogo" class="TituloSecaoCatalogo">
+            Jogos disponíveis
+          </h2>
+
+          <div
+            class="GradeCatalogo"
+            id="gradeCatalogo"
+            role="list"
+            aria-label="Lista de jogos digitais"
+          ></div>
+
+          <p class="MensagemCatalogoVazio" id="mensagemCatalogoVazio" hidden>
+            Nenhum jogo encontrado para a busca informada.
+          </p>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

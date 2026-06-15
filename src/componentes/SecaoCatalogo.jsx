@@ -1,11 +1,62 @@
-import { Alert, Box, CircularProgress, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  CircularProgress,
+  Paper,
+  Typography,
+} from "@mui/material";
+import BarraControlesCatalogo from "./BarraControlesCatalogo";
 import CartaoJogo from "./CartaoJogo";
+import CartaoJogoSkeleton from "./CartaoJogoSkeleton";
+import { temFiltrosAtivos } from "../constantes/filtrosCatalogo";
+import {
+  ESTILO_GRADE_CATALOGO,
+  QUANTIDADE_SKELETONS,
+} from "../constantes/layoutCatalogo";
 
-function SecaoCatalogo({ jogos, textoBusca, carregando, mensagemErro }) {
-  const catalogoVazio = !carregando && !mensagemErro && jogos.length === 0;
+function EstadoVazioCatalogo({ mensagem }) {
+  return (
+    <Paper
+      variant="outlined"
+      sx={{
+        py: 6,
+        px: 3,
+        textAlign: "center",
+        borderStyle: "dashed",
+        bgcolor: "background.default",
+      }}
+    >
+      <Typography component="p" variant="body1" color="text.secondary">
+        {mensagem}
+      </Typography>
+    </Paper>
+  );
+}
+
+function SecaoCatalogo({
+  jogos,
+  textoBusca,
+  filtros,
+  ordenacao,
+  aoAlterarOrdenacao,
+  carregandoInicial,
+  carregandoMais,
+  temMais,
+  mensagemErro,
+  aoCarregarMais,
+  aoTentarNovamente,
+}) {
+  const catalogoVazio =
+    !carregandoInicial && !mensagemErro && jogos.length === 0;
+  const possuiFiltros = temFiltrosAtivos(filtros);
   const mensagemVazia = textoBusca.trim()
-    ? "Nenhum jogo encontrado para a busca informada."
-    : "Nenhum jogo disponível no momento.";
+    ? possuiFiltros
+      ? "Nenhum jogo encontrado para a busca e filtros selecionados. Tente ajustar os critérios."
+      : "Nenhum jogo encontrado para a busca informada. Tente outro termo ou altere a ordenação."
+    : possuiFiltros
+      ? "Nenhum jogo encontrado com os filtros selecionados. Tente outros critérios."
+      : "Nenhum jogo disponível no momento. Tente novamente em instantes.";
 
   return (
     <Box
@@ -13,50 +64,81 @@ function SecaoCatalogo({ jogos, textoBusca, carregando, mensagemErro }) {
       aria-labelledby="tituloSecaoCatalogo"
       aria-live="polite"
     >
-      <Typography
-        component="h2"
-        id="tituloSecaoCatalogo"
-        variant="h5"
-        gutterBottom
-        mb={3}
-      >
-        Jogos disponíveis
-      </Typography>
+      <BarraControlesCatalogo
+        ordenacao={ordenacao}
+        aoAlterarOrdenacao={aoAlterarOrdenacao}
+        quantidadeJogos={jogos.length}
+        carregandoInicial={carregandoInicial}
+        textoBusca={textoBusca}
+        possuiFiltros={possuiFiltros}
+      />
 
       {mensagemErro && (
-        <Alert severity="error" sx={{ mb: 3 }}>
+        <Alert
+          severity="error"
+          sx={{ mb: 3 }}
+          action={
+            <Button color="inherit" size="small" onClick={aoTentarNovamente}>
+              Tentar novamente
+            </Button>
+          }
+        >
           {mensagemErro}
         </Alert>
       )}
 
-      {carregando ? (
-        <Box display="flex" justifyContent="center" py={6}>
-          <CircularProgress aria-label="Carregando jogos" />
-        </Box>
-      ) : catalogoVazio ? (
-        <Typography
-          component="p"
-          variant="body1"
-          color="text.secondary"
-          textAlign="center"
-          py={6}
-        >
-          {mensagemVazia}
-        </Typography>
-      ) : (
+      {carregandoInicial ? (
         <Box
-          display="grid"
-          gridTemplateColumns="repeat(auto-fill, minmax(220px, 1fr))"
-          gap={3}
-          role="list"
-          aria-label="Lista de jogos digitais"
+          sx={ESTILO_GRADE_CATALOGO}
+          aria-busy="true"
+          aria-label="Carregando jogos"
         >
-          {jogos.map((dadosJogo) => (
-            <Box key={dadosJogo.identificador} role="listitem">
-              <CartaoJogo dadosJogo={dadosJogo} />
+          {Array.from({ length: QUANTIDADE_SKELETONS }, (_, indice) => (
+            <Box key={indice}>
+              <CartaoJogoSkeleton />
             </Box>
           ))}
         </Box>
+      ) : catalogoVazio ? (
+        <EstadoVazioCatalogo mensagem={mensagemVazia} />
+      ) : (
+        <>
+          <Box
+            sx={ESTILO_GRADE_CATALOGO}
+            role="list"
+            aria-label="Lista de jogos digitais"
+          >
+            {jogos.map((dadosJogo) => (
+              <Box key={dadosJogo.identificador} role="listitem">
+                <CartaoJogo dadosJogo={dadosJogo} />
+              </Box>
+            ))}
+
+            {carregandoMais &&
+              Array.from({ length: 4 }, (_, indice) => (
+                <Box key={`skeleton-mais-${indice}`}>
+                  <CartaoJogoSkeleton />
+                </Box>
+              ))}
+          </Box>
+
+          {temMais && (
+            <Box display="flex" justifyContent="center" mt={4}>
+              <Button
+                variant="outlined"
+                onClick={aoCarregarMais}
+                disabled={carregandoMais}
+                startIcon={
+                  carregandoMais ? (
+                    <CircularProgress size={16} color="inherit" />
+                  ) : null
+                }
+              >
+                {carregandoMais ? "Carregando..." : "Carregar mais jogos"}
+              </Button>
+            </Box>
+          )}
+        </>
       )}
     </Box>
   );

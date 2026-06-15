@@ -1,5 +1,6 @@
 let tokenEmCache = null;
 let tokenExpiraEm = 0;
+let promessaRenovacao = null;
 
 function obterCredenciais() {
   const clientId = process.env.TWITCH_CLIENT_ID;
@@ -14,13 +15,16 @@ function obterCredenciais() {
   return { clientId, clientSecret };
 }
 
-async function obterTokenAcesso() {
-  const agora = Date.now();
+function invalidarToken() {
+  tokenEmCache = null;
+  tokenExpiraEm = 0;
+}
 
-  if (tokenEmCache && agora < tokenExpiraEm) {
-    return tokenEmCache;
-  }
+function tokenValido() {
+  return tokenEmCache && Date.now() < tokenExpiraEm;
+}
 
+async function renovarToken() {
   const { clientId, clientSecret } = obterCredenciais();
   const parametros = new URLSearchParams({
     client_id: clientId,
@@ -40,6 +44,7 @@ async function obterTokenAcesso() {
 
   const dados = await resposta.json();
   const margemSegurancaMs = 60_000;
+  const agora = Date.now();
 
   tokenEmCache = dados.access_token;
   tokenExpiraEm = agora + dados.expires_in * 1000 - margemSegurancaMs;
@@ -47,4 +52,18 @@ async function obterTokenAcesso() {
   return tokenEmCache;
 }
 
-export { obterCredenciais, obterTokenAcesso };
+async function obterTokenAcesso() {
+  if (tokenValido()) {
+    return tokenEmCache;
+  }
+
+  if (!promessaRenovacao) {
+    promessaRenovacao = renovarToken().finally(() => {
+      promessaRenovacao = null;
+    });
+  }
+
+  return promessaRenovacao;
+}
+
+export { invalidarToken, obterCredenciais, obterTokenAcesso };

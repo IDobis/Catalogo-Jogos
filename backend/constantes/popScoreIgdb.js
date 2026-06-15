@@ -1,0 +1,13 @@
+const URL_IGDB_POPULARITY_PRIMITIVES =
+  "https://api.igdb.com/v4/popularity_primitives";
+
+/** IGDB PopScore — horas assistidas na Twitch nas últimas 24h */
+const TIPO_POPULARIDADE_TWITCH_HORAS_ASSISTIDAS = 34;
+
+const LIMITE_MAXIMO_PRIMITIVOS = 500;
+
+export {
+  LIMITE_MAXIMO_PRIMITIVOS,
+  TIPO_POPULARIDADE_TWITCH_HORAS_ASSISTIDAS,
+  URL_IGDB_POPULARITY_PRIMITIVES,
+};

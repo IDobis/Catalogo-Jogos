@@ -6,7 +6,6 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import formatarPreco from "../utilidades/formatarPreco";
 
 function CartaoJogo({ dadosJogo }) {
   return (
@@ -22,20 +21,22 @@ function CartaoJogo({ dadosJogo }) {
         },
       }}
     >
-      <CardMedia
-        component="img"
-        image={dadosJogo.urlImagemCapa}
-        alt={`Capa do jogo ${dadosJogo.titulo}`}
-        loading="lazy"
-        sx={{ aspectRatio: "3 / 4", objectFit: "cover" }}
-      />
+      {dadosJogo.urlImagemCapa && (
+        <CardMedia
+          component="img"
+          image={dadosJogo.urlImagemCapa}
+          alt={`Capa do jogo ${dadosJogo.titulo}`}
+          loading="lazy"
+          sx={{ aspectRatio: "3 / 4", objectFit: "cover" }}
+        />
+      )}
 
       <CardContent>
         <Typography component="h3" variant="h6" gutterBottom>
           {dadosJogo.titulo}
         </Typography>
 
-        <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap sx={{ mb: 1.5 }}>
+        <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
           <Chip label={dadosJogo.genero} size="small" variant="outlined" />
           <Chip
             label={dadosJogo.plataforma}
@@ -44,20 +45,6 @@ function CartaoJogo({ dadosJogo }) {
             variant="outlined"
           />
         </Stack>
-
-        <Typography component="p" variant="body2" color="text.secondary">
-          Preço:{" "}
-          <Typography
-            component="data"
-            value={dadosJogo.preco}
-            variant="body1"
-            color="secondary"
-            fontWeight={700}
-            display="inline"
-          >
-            {formatarPreco(dadosJogo.preco)}
-          </Typography>
-        </Typography>
       </CardContent>
     </Card>
   );

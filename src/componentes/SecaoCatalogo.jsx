@@ -1,8 +1,11 @@
-import { Box, Typography } from "@mui/material";
+import { Alert, Box, CircularProgress, Typography } from "@mui/material";
 import CartaoJogo from "./CartaoJogo";
 
-function SecaoCatalogo({ jogosFiltrados }) {
-  const catalogoVazio = jogosFiltrados.length === 0;
+function SecaoCatalogo({ jogos, textoBusca, carregando, mensagemErro }) {
+  const catalogoVazio = !carregando && !mensagemErro && jogos.length === 0;
+  const mensagemVazia = textoBusca.trim()
+    ? "Nenhum jogo encontrado para a busca informada."
+    : "Nenhum jogo disponível no momento.";
 
   return (
     <Box
@@ -20,7 +23,17 @@ function SecaoCatalogo({ jogosFiltrados }) {
         Jogos disponíveis
       </Typography>
 
-      {catalogoVazio ? (
+      {mensagemErro && (
+        <Alert severity="error" sx={{ mb: 3 }}>
+          {mensagemErro}
+        </Alert>
+      )}
+
+      {carregando ? (
+        <Box display="flex" justifyContent="center" py={6}>
+          <CircularProgress aria-label="Carregando jogos" />
+        </Box>
+      ) : catalogoVazio ? (
         <Typography
           component="p"
           variant="body1"
@@ -28,7 +41,7 @@ function SecaoCatalogo({ jogosFiltrados }) {
           textAlign="center"
           py={6}
         >
-          Nenhum jogo encontrado para a busca informada.
+          {mensagemVazia}
         </Typography>
       ) : (
         <Box
@@ -38,7 +51,7 @@ function SecaoCatalogo({ jogosFiltrados }) {
           role="list"
           aria-label="Lista de jogos digitais"
         >
-          {jogosFiltrados.map((dadosJogo) => (
+          {jogos.map((dadosJogo) => (
             <Box key={dadosJogo.identificador} role="listitem">
               <CartaoJogo dadosJogo={dadosJogo} />
             </Box>

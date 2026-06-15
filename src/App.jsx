@@ -1,24 +1,11 @@
-import { useMemo, useState } from "react";
 import { Box, Container } from "@mui/material";
 import CabecalhoCatalogo from "./componentes/CabecalhoCatalogo";
 import SecaoCatalogo from "./componentes/SecaoCatalogo";
-import listaDeJogos from "./dados/listaDeJogos";
-
-function filtrarJogosPorTitulo(textoBusca) {
-  const termoBusca = textoBusca.trim().toLowerCase();
-
-  return listaDeJogos.filter((dadosJogo) =>
-    dadosJogo.titulo.toLowerCase().includes(termoBusca)
-  );
-}
+import useCatalogoJogos from "./hooks/useCatalogoJogos";
 
 function App() {
-  const [textoBusca, setTextoBusca] = useState("");
-
-  const jogosFiltrados = useMemo(
-    () => filtrarJogosPorTitulo(textoBusca),
-    [textoBusca]
-  );
+  const { textoBusca, setTextoBusca, jogos, carregando, mensagemErro } =
+    useCatalogoJogos();
 
   return (
     <Box component="div" className="Aplicacao">
@@ -29,7 +16,12 @@ function App() {
         />
 
         <Box component="main">
-          <SecaoCatalogo jogosFiltrados={jogosFiltrados} />
+          <SecaoCatalogo
+            jogos={jogos}
+            textoBusca={textoBusca}
+            carregando={carregando}
+            mensagemErro={mensagemErro}
+          />
         </Box>
       </Container>
     </Box>

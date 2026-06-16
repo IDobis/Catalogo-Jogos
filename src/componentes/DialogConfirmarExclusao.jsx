@@ -2,7 +2,6 @@ import { useState } from "react";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import {
   Box,
-  Button,
   CircularProgress,
   Dialog,
   DialogActions,
@@ -11,42 +10,8 @@ import {
   DialogTitle,
   Zoom,
 } from "@mui/material";
-
-const estiloBotaoCancelar = {
-  textTransform: "none",
-  fontWeight: 600,
-  px: 2.5,
-  color: "primary.main",
-  transition: "all 0.2s ease",
-  "&:hover": {
-    bgcolor: "rgba(108, 92, 231, 0.14)",
-    transform: "translateY(-1px)",
-  },
-  "&:active": {
-    transform: "translateY(0) scale(0.98)",
-  },
-};
-
-const estiloBotaoExcluir = {
-  textTransform: "none",
-  fontWeight: 700,
-  px: 2.5,
-  transition: "all 0.25s ease",
-  boxShadow: "0 2px 8px rgba(211, 47, 47, 0.35)",
-  "&:hover": {
-    transform: "translateY(-2px) scale(1.03)",
-    boxShadow: "0 8px 24px rgba(211, 47, 47, 0.5)",
-  },
-  "&:active": {
-    transform: "translateY(0) scale(0.97)",
-    boxShadow: "0 2px 6px rgba(211, 47, 47, 0.4)",
-  },
-  "&.Mui-disabled": {
-    bgcolor: "error.dark",
-    color: "error.contrastText",
-    opacity: 0.85,
-  },
-};
+import { alpha } from "@mui/material/styles";
+import BotaoPadraoPulante from "./BotaoPadraoPulante";
 
 function DialogConfirmarExclusao({
   aberto,
@@ -112,14 +77,23 @@ function DialogConfirmarExclusao({
       </DialogContent>
 
       <DialogActions sx={{ px: 3, pb: 2.5, gap: 1 }}>
-        <Button onClick={aoFechar} disabled={excluindo} sx={estiloBotaoCancelar}>
+        <BotaoPadraoPulante
+          onClick={aoFechar}
+          disabled={excluindo}
+          corHover="rgba(108, 92, 231, 0.14)"
+          sx={{ px: 2.5, color: "primary.main" }}
+        >
           Cancelar
-        </Button>
-        <Button
+        </BotaoPadraoPulante>
+        <BotaoPadraoPulante
           onClick={confirmar}
           color="error"
           variant="contained"
           disabled={excluindo}
+          corHover="error.dark"
+          sombraHover={(theme) =>
+            `0 4px 14px ${alpha(theme.palette.error.main, 0.42)}`
+          }
           startIcon={
             excluindo ? (
               <CircularProgress size={18} color="inherit" />
@@ -127,10 +101,21 @@ function DialogConfirmarExclusao({
               <DeleteForeverIcon />
             )
           }
-          sx={estiloBotaoExcluir}
+          sx={{
+            px: 2.5,
+            boxShadow: "0 2px 8px rgba(211, 47, 47, 0.35)",
+            "&:active": {
+              boxShadow: "0 2px 6px rgba(211, 47, 47, 0.4)",
+            },
+            "&.Mui-disabled": {
+              bgcolor: "error.dark",
+              color: "error.contrastText",
+              opacity: 0.85,
+            },
+          }}
         >
           {excluindo ? "Excluindo..." : "Excluir"}
-        </Button>
+        </BotaoPadraoPulante>
       </DialogActions>
     </Dialog>
   );

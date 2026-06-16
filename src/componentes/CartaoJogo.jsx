@@ -9,12 +9,12 @@ import {
   CardContent,
   CardMedia,
   Chip,
-  IconButton,
   Stack,
   Tooltip,
   Typography,
 } from "@mui/material";
 import BotaoFavorito from "./BotaoFavorito";
+import IconButtonPadraoPulante from "./IconButtonPadraoPulante";
 
 function AreaCapaJogo() {
   return (
@@ -151,23 +151,23 @@ function CartaoJogo({
         {ehLocal && (
           <Stack direction="row" spacing={1} mt={2}>
             <Tooltip title="Editar jogo">
-              <IconButton
+              <IconButtonPadraoPulante
                 size="small"
                 aria-label={`Editar ${dadosJogo.titulo}`}
                 onClick={() => aoEditar?.(dadosJogo)}
               >
                 <EditOutlinedIcon fontSize="small" />
-              </IconButton>
+              </IconButtonPadraoPulante>
             </Tooltip>
             <Tooltip title="Excluir jogo">
-              <IconButton
+              <IconButtonPadraoPulante
                 size="small"
                 color="error"
                 aria-label={`Excluir ${dadosJogo.titulo}`}
                 onClick={() => aoExcluir?.(dadosJogo)}
               >
                 <DeleteOutlineIcon fontSize="small" />
-              </IconButton>
+              </IconButtonPadraoPulante>
             </Tooltip>
           </Stack>
         )}

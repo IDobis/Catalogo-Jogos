@@ -7,7 +7,6 @@ import useCatalogoJogos from "../hooks/useCatalogoJogos";
 function PaginaCatalogo() {
   const {
     textoBusca,
-    setTextoBusca,
     ordenacao,
     setOrdenacao,
     filtros,
@@ -23,10 +22,7 @@ function PaginaCatalogo() {
 
   return (
     <Container maxWidth="lg" sx={{ py: { xs: 3, md: 4 } }}>
-      <CabecalhoCatalogo
-        textoBusca={textoBusca}
-        aoAlterarBusca={setTextoBusca}
-      />
+      <CabecalhoCatalogo />
 
       <Box component="main">
         <PainelFiltrosCatalogo

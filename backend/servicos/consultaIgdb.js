@@ -123,7 +123,7 @@ async function consultarJogosIgdb({
 }
 
 const CAMPOS_JOGO_DETALHE =
-  "name, summary, cover.image_id, genres.name, platforms.name, first_release_date, rating";
+  "name, summary, cover.image_id, genres.name, platforms.name, first_release_date, rating, screenshots.image_id, videos.video_id, videos.name";
 
 function montarConsultaPorId(identificador) {
   return [

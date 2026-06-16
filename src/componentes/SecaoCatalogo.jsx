@@ -1,11 +1,11 @@
 import {
   Alert,
   Box,
-  Button,
   CircularProgress,
   Paper,
   Typography,
 } from "@mui/material";
+import BotaoPadraoPulante from "./BotaoPadraoPulante";
 import BarraControlesCatalogo from "./BarraControlesCatalogo";
 import CartaoJogo from "./CartaoJogo";
 import CartaoJogoSkeleton from "./CartaoJogoSkeleton";
@@ -78,9 +78,9 @@ function SecaoCatalogo({
           severity="error"
           sx={{ mb: 3 }}
           action={
-            <Button color="inherit" size="small" onClick={aoTentarNovamente}>
+            <BotaoPadraoPulante color="inherit" size="small" onClick={aoTentarNovamente}>
               Tentar novamente
-            </Button>
+            </BotaoPadraoPulante>
           }
         >
           {mensagemErro}
@@ -124,7 +124,7 @@ function SecaoCatalogo({
 
           {temMais && (
             <Box display="flex" justifyContent="center" mt={4}>
-              <Button
+              <BotaoPadraoPulante
                 variant="outlined"
                 onClick={aoCarregarMais}
                 disabled={carregandoMais}
@@ -135,7 +135,7 @@ function SecaoCatalogo({
                 }
               >
                 {carregandoMais ? "Carregando..." : "Carregar mais jogos"}
-              </Button>
+              </BotaoPadraoPulante>
             </Box>
           )}
         </>

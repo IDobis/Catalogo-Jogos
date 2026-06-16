@@ -1,7 +1,8 @@
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { IconButton, Tooltip } from "@mui/material";
+import { Tooltip } from "@mui/material";
 import { useArmazenamentoPessoal } from "../contextos/ArmazenamentoPessoalContext";
+import IconButtonPadraoPulante from "./IconButtonPadraoPulante";
 
 function BotaoFavorito({ dadosJogo, tamanho = "small" }) {
   const { ehFavorito, alternarFavorito } = useArmazenamentoPessoal();
@@ -15,7 +16,7 @@ function BotaoFavorito({ dadosJogo, tamanho = "small" }) {
 
   return (
     <Tooltip title={marcado ? "Remover dos favoritos" : "Adicionar aos favoritos"}>
-      <IconButton
+      <IconButtonPadraoPulante
         size={tamanho}
         onClick={aoClicar}
         aria-label={
@@ -30,7 +31,7 @@ function BotaoFavorito({ dadosJogo, tamanho = "small" }) {
         }}
       >
         {marcado ? <FavoriteIcon fontSize="small" /> : <FavoriteBorderIcon fontSize="small" />}
-      </IconButton>
+      </IconButtonPadraoPulante>
     </Tooltip>
   );
 }

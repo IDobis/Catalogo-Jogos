@@ -4,6 +4,12 @@ import {
   CHAVE_JOGOS_LOCAIS,
 } from "../constantes/armazenamentoPessoal";
 import { lerLista, salvarLista } from "../servicos/armazenamentoLocal";
+import {
+  aplicarImportacao,
+  montarDadosExportacao,
+  montarNomeArquivoExportacao,
+  serializarDadosExportacao,
+} from "../utilidades/armazenamentoPessoalExportacao";
 
 const ArmazenamentoPessoalContext = createContext(null);
 
@@ -107,6 +113,34 @@ function ArmazenamentoPessoalProvider({ children }) {
     );
   }, []);
 
+  const exportarDados = useCallback(() => {
+    const dados = montarDadosExportacao(favoritos, jogosLocais);
+    const conteudo = serializarDadosExportacao(dados);
+    const blob = new Blob([conteudo], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = montarNomeArquivoExportacao();
+    link.click();
+    URL.revokeObjectURL(url);
+  }, [favoritos, jogosLocais]);
+
+  const importarDados = useCallback(
+    (dadosImportados, modo) => {
+      const { favoritos: novosFavoritos, minhaLista: novaMinhaLista } =
+        aplicarImportacao(favoritos, jogosLocais, dadosImportados, modo);
+
+      setFavoritos(novosFavoritos);
+      setJogosLocais(novaMinhaLista);
+
+      return {
+        favoritos: novosFavoritos.length,
+        minhaLista: novaMinhaLista.length,
+      };
+    },
+    [favoritos, jogosLocais]
+  );
+
   const valor = {
     favoritos,
     jogosLocais,
@@ -115,6 +149,8 @@ function ArmazenamentoPessoalProvider({ children }) {
     adicionarJogoLocal,
     atualizarJogoLocal,
     removerJogoLocal,
+    exportarDados,
+    importarDados,
   };
 
   return (

@@ -3,7 +3,6 @@ import { Link as RouterLink } from "react-router-dom";
 import {
   Alert,
   Box,
-  Button,
   Chip,
   Container,
   Paper,
@@ -12,6 +11,8 @@ import {
   Typography,
 } from "@mui/material";
 import BotaoFavorito from "../componentes/BotaoFavorito";
+import BotaoPadraoPulante from "../componentes/BotaoPadraoPulante";
+import SecaoMidiaDetalheJogo from "../componentes/SecaoMidiaDetalheJogo";
 import useJogoDetalhe from "../hooks/useJogoDetalhe";
 
 function CapaDetalheJogo({ urlImagem, titulo }) {
@@ -105,14 +106,14 @@ function PaginaDetalheJogo({ identificador }) {
 
   return (
     <Container maxWidth="lg" sx={{ py: { xs: 3, md: 4 } }}>
-      <Button
+      <BotaoPadraoPulante
         component={RouterLink}
         to="/"
         variant="text"
         sx={{ mb: 3 }}
       >
         ← Voltar ao catálogo
-      </Button>
+      </BotaoPadraoPulante>
 
       {mensagemErro && (
         <Alert
@@ -120,18 +121,18 @@ function PaginaDetalheJogo({ identificador }) {
           sx={{ mb: 3 }}
           action={
             mensagemErro !== "Jogo não encontrado." ? (
-              <Button color="inherit" size="small" onClick={recarregar}>
+              <BotaoPadraoPulante color="inherit" size="small" onClick={recarregar}>
                 Tentar novamente
-              </Button>
+              </BotaoPadraoPulante>
             ) : (
-              <Button
+              <BotaoPadraoPulante
                 color="inherit"
                 size="small"
                 component={RouterLink}
                 to="/"
               >
                 Ir ao catálogo
-              </Button>
+              </BotaoPadraoPulante>
             )
           }
         >
@@ -199,6 +200,14 @@ function PaginaDetalheJogo({ identificador }) {
               >
                 {jogo.resumo ?? "Descrição não disponível para este jogo."}
               </Typography>
+            </Box>
+
+            <Box sx={{ gridColumn: "1 / -1" }}>
+              <SecaoMidiaDetalheJogo
+                trailers={jogo.trailers}
+                screenshots={jogo.screenshots}
+                tituloJogo={jogo.titulo}
+              />
             </Box>
           </Box>
         )

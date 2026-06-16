@@ -1,4 +1,5 @@
-import { Box, Container, Paper, Typography } from "@mui/material";
+import { Box, Container, Paper, Stack, Typography } from "@mui/material";
+import BarraExportarImportarDados from "../componentes/BarraExportarImportarDados";
 import CartaoJogo from "../componentes/CartaoJogo";
 import { useArmazenamentoPessoal } from "../contextos/ArmazenamentoPessoalContext";
 import { ESTILO_GRADE_CATALOGO } from "../constantes/layoutCatalogo";
@@ -8,12 +9,24 @@ function PaginaFavoritos() {
 
   return (
     <Container maxWidth="lg" sx={{ py: { xs: 3, md: 4 } }}>
-      <Typography component="h1" variant="h4" gutterBottom>
-        Favoritos
-      </Typography>
-      <Typography variant="body1" color="text.secondary" mb={4}>
-        Jogos da IGDB que você marcou como favoritos.
-      </Typography>
+      <Stack
+        direction={{ xs: "column", sm: "row" }}
+        alignItems={{ xs: "stretch", sm: "flex-start" }}
+        justifyContent="space-between"
+        gap={2}
+        mb={4}
+      >
+        <Box>
+          <Typography component="h1" variant="h4" gutterBottom>
+            Favoritos
+          </Typography>
+          <Typography variant="body1" color="text.secondary">
+            Jogos da IGDB que você marcou como favoritos.
+          </Typography>
+        </Box>
+
+        <BarraExportarImportarDados />
+      </Stack>
 
       {favoritos.length === 0 ? (
         <Paper

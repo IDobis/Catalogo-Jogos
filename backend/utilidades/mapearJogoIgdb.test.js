@@ -58,7 +58,7 @@ describe("mapearListaJogosIgdb", () => {
 });
 
 describe("mapearJogoDetalheIgdb", () => {
-  it("inclui resumo e listas de gêneros e plataformas", () => {
+  it("inclui resumo, mídia e listas de gêneros e plataformas", () => {
     const resultado = mapearJogoDetalheIgdb({
       id: 10,
       name: "Celeste",
@@ -67,11 +67,31 @@ describe("mapearJogoDetalheIgdb", () => {
       platforms: [{ name: "Nintendo Switch" }],
       first_release_date: 1515542400,
       rating: 93,
+      videos: [{ video_id: "abc123", name: "Launch Trailer" }],
+      screenshots: [{ image_id: "sc1xyz" }, { image_id: "sc2xyz" }],
     });
 
     assert.equal(resultado.resumo, "Um jogo desafiador.");
     assert.deepEqual(resultado.generos, ["Platform"]);
     assert.deepEqual(resultado.plataformas, ["Nintendo Switch"]);
     assert.equal(resultado.anoLancamento, 2018);
+    assert.equal(resultado.trailers.length, 1);
+    assert.equal(resultado.trailers[0].titulo, "Launch Trailer");
+    assert.match(
+      resultado.trailers[0].urlEmbed,
+      /https:\/\/www\.youtube\.com\/embed\/abc123/
+    );
+    assert.equal(resultado.screenshots.length, 2);
+    assert.match(
+      resultado.screenshots[0].urlImagem,
+      /t_screenshot_huge\/sc1xyz\.webp/
+    );
+  });
+
+  it("retorna listas vazias quando não há mídia", () => {
+    const resultado = mapearJogoDetalheIgdb({ id: 1, name: "Jogo" });
+
+    assert.deepEqual(resultado.trailers, []);
+    assert.deepEqual(resultado.screenshots, []);
   });
 });

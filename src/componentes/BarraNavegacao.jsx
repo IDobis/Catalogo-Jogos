@@ -1,9 +1,20 @@
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
+import { useCallback, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { AppBar, Box, Container, IconButton, Toolbar, Tooltip, Typography } from "@mui/material";
-import { alpha } from "@mui/material/styles";
+import { alpha, keyframes } from "@mui/material/styles";
+import { linkPadraoPulante } from "../constantes/estilosBotao";
+import { useBuscaCatalogo } from "../contextos/BuscaCatalogoContext";
 import { useTema } from "../contextos/TemaContext";
+import CampoBuscaPorTitulo from "./CampoBuscaPorTitulo";
+
+const pulsarIconeTema = keyframes`
+  0% { transform: scale(1); }
+  45% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+`;
+
 const estiloLinkBase = {
   display: "inline-block",
   color: "text.secondary",
@@ -12,7 +23,11 @@ const estiloLinkBase = {
   py: 0.75,
   borderRadius: 1,
   fontWeight: 500,
-  transition: "color 0.2s, background-color 0.2s",
+  ...linkPadraoPulante(),
+  "&:hover": {
+    ...linkPadraoPulante()["&:hover"],
+    color: "primary.main",
+  },
 };
 
 const estiloLinkAtivo = {
@@ -35,8 +50,54 @@ function ItemNavegacao({ to, children, end = false }) {
   );
 }
 
-function BarraNavegacao() {
+function BotaoAlternarTema() {
   const { ehModoClaro, alternarModo } = useTema();
+  const [pulsando, setPulsando] = useState(false);
+
+  const aoClicar = useCallback(() => {
+    setPulsando(true);
+    alternarModo();
+  }, [alternarModo]);
+
+  return (
+    <Tooltip title={ehModoClaro ? "Ativar modo escuro" : "Ativar modo claro"}>
+      <IconButton
+        onClick={aoClicar}
+        color="primary"
+        disableRipple
+        aria-label={ehModoClaro ? "Ativar modo escuro" : "Ativar modo claro"}
+        sx={{
+          bgcolor: "transparent",
+          transition: "background-color 0.2s ease",
+          "& .MuiSvgIcon-root": {
+            transition: "opacity 0.2s ease",
+            opacity: 0.85,
+          },
+          "&:hover": {
+            bgcolor: (theme) => alpha(theme.palette.primary.main, 0.08),
+            "& .MuiSvgIcon-root": {
+              opacity: 1,
+            },
+          },
+        }}
+      >
+        <Box
+          component="span"
+          onAnimationEnd={() => setPulsando(false)}
+          sx={{
+            display: "flex",
+            animation: pulsando ? `${pulsarIconeTema} 0.45s ease` : "none",
+          }}
+        >
+          {ehModoClaro ? <DarkModeIcon /> : <LightModeIcon />}
+        </Box>
+      </IconButton>
+    </Tooltip>
+  );
+}
+
+function BarraNavegacao() {
+  const { textoBusca, setTextoBusca } = useBuscaCatalogo();
 
   return (
     <AppBar
@@ -57,7 +118,7 @@ function BarraNavegacao() {
             : `0 4px 24px ${alpha(theme.palette.primary.main, 0.08)}`,
       })}
     >      <Container maxWidth="lg">
-        <Toolbar disableGutters sx={{ gap: 2, py: 1 }}>
+        <Toolbar disableGutters sx={{ py: 1, flexWrap: "nowrap" }}>
           <Typography
             component={NavLink}
             to="/"
@@ -66,7 +127,8 @@ function BarraNavegacao() {
               color: "text.primary",
               textDecoration: "none",
               fontWeight: 700,
-              mr: { sm: 2 },
+              mr: { sm: 1 },
+              flexShrink: 0,
             }}
           >
             Catálogo
@@ -77,8 +139,7 @@ function BarraNavegacao() {
             aria-label="Navegação principal"
             display="flex"
             gap={0.5}
-            flexWrap="wrap"
-            flexGrow={1}
+            flexShrink={0}
           >
             <ItemNavegacao to="/" end>
               Início
@@ -87,27 +148,24 @@ function BarraNavegacao() {
             <ItemNavegacao to="/minha-lista">Minha Lista</ItemNavegacao>
           </Box>
 
-          <Tooltip title={ehModoClaro ? "Ativar modo escuro" : "Ativar modo claro"}>
-            <IconButton
-              onClick={alternarModo}
-              color="primary"
-              aria-label={ehModoClaro ? "Ativar modo escuro" : "Ativar modo claro"}
-              sx={{
-                bgcolor: (theme) =>
-                  theme.palette.mode === "dark"
-                    ? "rgba(108, 92, 231, 0.12)"
-                    : "rgba(108, 92, 231, 0.1)",
-                "&:hover": {
-                  bgcolor: (theme) =>
-                    theme.palette.mode === "dark"
-                      ? "rgba(108, 92, 231, 0.22)"
-                      : "rgba(108, 92, 231, 0.18)",
-                },
-              }}
-            >
-              {ehModoClaro ? <DarkModeIcon /> : <LightModeIcon />}
-            </IconButton>
-          </Tooltip>
+          <Box
+            sx={{
+              flex: 1,
+              minWidth: 0,
+              ml: "30px",
+              mr: "30px",
+            }}
+          >
+            <CampoBuscaPorTitulo
+              valor={textoBusca}
+              aoAlterar={setTextoBusca}
+              compacto
+            />
+          </Box>
+
+          <Box sx={{ flexShrink: 0 }}>
+            <BotaoAlternarTema />
+          </Box>
         </Toolbar>
       </Container>
     </AppBar>

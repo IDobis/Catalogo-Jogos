@@ -4,7 +4,6 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import {
   Badge,
   Box,
-  Button,
   Collapse,
   FormControl,
   InputLabel,
@@ -12,6 +11,7 @@ import {
   Paper,
   Select,
 } from "@mui/material";
+import BotaoPadraoPulante from "./BotaoPadraoPulante";
 import {
   FILTROS_INICIAIS,
   OPCOES_FILTRO_CATALOGO,
@@ -41,7 +41,7 @@ function PainelFiltrosCatalogo({ filtros, aoAlterarFiltros, carregandoInicial })
   return (
     <Box component="section" aria-label="Filtros do catálogo" sx={{ mb: 3 }}>
       <Box display="flex" alignItems="center" gap={2} flexWrap="wrap">
-        <Button
+        <BotaoPadraoPulante
           variant="text"
           color="primary"
           onClick={alternarPainel}
@@ -66,25 +66,22 @@ function PainelFiltrosCatalogo({ filtros, aoAlterarFiltros, carregandoInicial })
           aria-expanded={expandido}
           aria-controls="painelFiltrosConteudo"
           sx={{
-            textTransform: "none",
-            fontWeight: 600,
             px: 0.5,
             minWidth: "auto",
           }}
         >
           Filtros
-        </Button>
+        </BotaoPadraoPulante>
 
         {!expandido && temFiltrosAtivos(filtros) && (
-          <Button
+          <BotaoPadraoPulante
             size="small"
             variant="text"
             onClick={limparFiltros}
             disabled={carregandoInicial}
-            sx={{ textTransform: "none" }}
           >
             Limpar filtros
-          </Button>
+          </BotaoPadraoPulante>
         )}
       </Box>
 
@@ -92,13 +89,13 @@ function PainelFiltrosCatalogo({ filtros, aoAlterarFiltros, carregandoInicial })
         <Paper variant="outlined" sx={{ p: 2, mt: 1.5 }}>
           {temFiltrosAtivos(filtros) && (
             <Box display="flex" justifyContent="flex-end" mb={2}>
-              <Button
+              <BotaoPadraoPulante
                 size="small"
                 onClick={limparFiltros}
                 disabled={carregandoInicial}
               >
                 Limpar filtros
-              </Button>
+              </BotaoPadraoPulante>
             </Box>
           )}
 

@@ -73,18 +73,17 @@ O aplicativo abre em [http://localhost:3000](http://localhost:3000).
 - Ordenação por nome, data de lançamento e popularidade (Popularidade foi alterado para o IGDB PopScore — Twitch Hours Watched, pois o por rating não fazia sentido.)
 - Filtros por gênero, plataforma, ano e nota mínima
 - Scroll infinito (carregando geralmente de 20 em 20) e skeleton loading nos cards
-- Página de detalhes do jogo (`/jogo/:id`)
+- Página de detalhes do jogo (`/jogo/:id`) com trailers (YouTube) e screenshots da IGDB
 - Navbar com efeito glass e navegação entre Catálogo, Favoritos e Minha Lista
 - Favoritos e CRUD manual de jogos persistidos no `localStorage`
+- Exportação e importação de favoritos e minha lista em JSON
 - Alternância entre tema escuro e claro (preferência salva no `localStorage`)
 - Backend Node.js com integração Twitch/IGDB e cache de token OAuth
 - Testes básicos no frontend e backend (`npm run test:ci`)
 
 ## Futuras Ideias
 
-- Exibir trailers e screenshots na página de detalhes
-- Traduzir a descrição dos jogos para português (pt-br)
-- Exportar e importar favoritos / minha lista (JSON)
+- Traduzir a descrição dos jogos para português (pt-BR(Provavelmente será necessário o uso de outra API))
 - Cache de respostas no backend para reduzir chamadas à IGDB
 - Testes end-to-end para automatizar os testes (está ficando cansaivo avaliar coisa por coisa após uma leve mudança em como se comporta um efeito de abrir um modal)
 - Otimizar layout para mobile (Arrumar o layout, está pútrido)

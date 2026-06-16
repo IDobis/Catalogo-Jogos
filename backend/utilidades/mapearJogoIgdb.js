@@ -1,4 +1,6 @@
 const TAMANHO_CAPA_IGDB = "t_cover_big";
+const TAMANHO_SCREENSHOT_IGDB = "t_screenshot_huge";
+const LIMITE_SCREENSHOTS_DETALHE = 12;
 
 function montarUrlCapa(capa) {
   if (!capa?.image_id) {
@@ -6,6 +8,50 @@ function montarUrlCapa(capa) {
   }
 
   return `https://images.igdb.com/igdb/image/upload/${TAMANHO_CAPA_IGDB}/${capa.image_id}.webp`;
+}
+
+function montarUrlScreenshot(imageId) {
+  if (!imageId) {
+    return null;
+  }
+
+  return `https://images.igdb.com/igdb/image/upload/${TAMANHO_SCREENSHOT_IGDB}/${imageId}.webp`;
+}
+
+function montarUrlEmbedYoutube(videoId) {
+  if (!videoId) {
+    return null;
+  }
+
+  return `https://www.youtube.com/embed/${videoId}`;
+}
+
+function mapearTrailers(videos) {
+  if (!Array.isArray(videos) || videos.length === 0) {
+    return [];
+  }
+
+  return videos
+    .filter((video) => video?.video_id)
+    .map((video) => ({
+      identificador: video.video_id,
+      titulo: video.name?.trim() || "Trailer",
+      urlEmbed: montarUrlEmbedYoutube(video.video_id),
+    }));
+}
+
+function mapearScreenshots(screenshots) {
+  if (!Array.isArray(screenshots) || screenshots.length === 0) {
+    return [];
+  }
+
+  return screenshots
+    .filter((screenshot) => screenshot?.image_id)
+    .slice(0, LIMITE_SCREENSHOTS_DETALHE)
+    .map((screenshot) => ({
+      identificador: screenshot.image_id,
+      urlImagem: montarUrlScreenshot(screenshot.image_id),
+    }));
 }
 
 function extrairNomes(listaItens) {
@@ -77,6 +123,8 @@ function mapearJogoDetalheIgdb(jogoIgdb) {
       typeof jogoIgdb.rating === "number"
         ? Math.round(jogoIgdb.rating)
         : null,
+    trailers: mapearTrailers(jogoIgdb.videos),
+    screenshots: mapearScreenshots(jogoIgdb.screenshots),
   };
 }
 

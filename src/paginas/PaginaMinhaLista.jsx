@@ -2,11 +2,12 @@ import { useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import {
   Box,
-  Button,
   Container,
   Paper,
   Typography,
 } from "@mui/material";
+import BarraExportarImportarDados from "../componentes/BarraExportarImportarDados";
+import BotaoPadraoPulante from "../componentes/BotaoPadraoPulante";
 import CartaoJogo from "../componentes/CartaoJogo";
 import DialogConfirmarExclusao from "../componentes/DialogConfirmarExclusao";
 import FormularioJogoLocal from "../componentes/FormularioJogoLocal";
@@ -77,14 +78,22 @@ function PaginaMinhaLista() {
           </Typography>
         </Box>
 
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={abrirNovoJogo}
-          sx={{ alignSelf: { sm: "center" } }}
+        <Box
+          display="flex"
+          flexDirection={{ xs: "column", sm: "row" }}
+          gap={1}
+          alignItems={{ xs: "stretch", sm: "center" }}
         >
-          Adicionar jogo
-        </Button>
+          <BarraExportarImportarDados />
+          <BotaoPadraoPulante
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={abrirNovoJogo}
+            sx={{ alignSelf: { sm: "center" } }}
+          >
+            Adicionar jogo
+          </BotaoPadraoPulante>
+        </Box>
       </Box>
 
       {jogosLocais.length === 0 ? (
@@ -101,9 +110,9 @@ function PaginaMinhaLista() {
             Sua lista pessoal está vazia. Adicione jogos que não estão no
             catálogo da IGDB.
           </Typography>
-          <Button variant="outlined" startIcon={<AddIcon />} onClick={abrirNovoJogo}>
+          <BotaoPadraoPulante variant="outlined" startIcon={<AddIcon />} onClick={abrirNovoJogo}>
             Adicionar primeiro jogo
-          </Button>
+          </BotaoPadraoPulante>
         </Paper>
       ) : (
         <Box

@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -8,6 +7,7 @@ import {
   TextField,
 } from "@mui/material";
 import { useEffect, useState } from "react";
+import BotaoPadraoPulante from "./BotaoPadraoPulante";
 
 const CAMPOS_INICIAIS = {
   titulo: "",
@@ -130,10 +130,10 @@ function FormularioJogoLocal({
       </DialogContent>
 
       <DialogActions sx={{ px: 3, pb: 2 }}>
-        <Button onClick={aoFechar}>Cancelar</Button>
-        <Button type="submit" variant="contained">
+        <BotaoPadraoPulante onClick={aoFechar}>Cancelar</BotaoPadraoPulante>
+        <BotaoPadraoPulante type="submit" variant="contained">
           {modoEdicao ? "Salvar alterações" : "Adicionar"}
-        </Button>
+        </BotaoPadraoPulante>
       </DialogActions>
       </Box>
     </Dialog>

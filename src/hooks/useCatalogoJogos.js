@@ -4,12 +4,13 @@ import {
   LIMITE_POR_PAGINA,
   ORDENACAO_PADRAO,
 } from "../constantes/ordenacaoCatalogo";
+import { useBuscaCatalogo } from "../contextos/BuscaCatalogoContext";
 import buscarJogos from "../servicos/apiCatalogo";
 
 const ATRASO_BUSCA_MS = 400;
 
 function useCatalogoJogos() {
-  const [textoBusca, setTextoBusca] = useState("");
+  const { textoBusca, setTextoBusca } = useBuscaCatalogo();
   const [termoConsulta, setTermoConsulta] = useState("");
   const [ordenacao, setOrdenacao] = useState(ORDENACAO_PADRAO);
   const [filtros, setFiltros] = useState(FILTROS_INICIAIS);

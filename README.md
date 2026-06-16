@@ -21,6 +21,7 @@ Catalogo-Jogos/
 │   ├── rotas/
 │   │   └── jogos.js
 │   ├── utilidades/
+│   │   ├── cacheRespostas.js
 │   │   ├── mapearJogoIgdb.js
 │   │   ├── montarFiltrosIgdb.js
 │   │   └── ordenacaoIgdb.js
@@ -79,15 +80,16 @@ O aplicativo abre em [http://localhost:3000](http://localhost:3000).
 - Exportação e importação de favoritos e minha lista em JSON
 - Alternância entre tema escuro e claro (preferência salva no `localStorage`)
 - Backend Node.js com integração Twitch/IGDB e cache de token OAuth
+- Cache em memória das respostas da IGDB (TTL configurável via `CACHE_IGDB_TTL_MS`)
+- Cache mais longo para PopScore (`CACHE_IGDB_POPSCORE_TTL_MS`, padrão 1 h) e pré-aquecimento do token Twitch ao iniciar o backend
+- Carregamento inicial mais leve: rotas secundárias com `React.lazy`, cancelamento de requisições duplicadas (`AbortController`), capas visíveis com prioridade e `preconnect` às imagens da IGDB
 - Testes básicos no frontend e backend (`npm run test:ci`)
 
 ## Futuras Ideias
 
 - Traduzir a descrição dos jogos para português (pt-BR(Provavelmente será necessário o uso de outra API))
-- Cache de respostas no backend para reduzir chamadas à IGDB
 - Testes end-to-end para automatizar os testes (está ficando cansaivo avaliar coisa por coisa após uma leve mudança em como se comporta um efeito de abrir um modal)
 - Otimizar layout para mobile (Arrumar o layout, está pútrido)
-- Otimizar / Polir o código (está demorando 600 milissegundos para a primeira abertura da página inicial pela primeira vez)
 - Deploy do frontend e backend para ficar disponível ao público (Último)
 
 ## Fontes de Informações

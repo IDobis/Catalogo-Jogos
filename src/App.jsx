@@ -1,12 +1,22 @@
-import { Box } from "@mui/material";
+import { lazy, Suspense } from "react";
+import { Box, CircularProgress } from "@mui/material";
 import { Route, Routes, useParams } from "react-router-dom";
 import BarraNavegacao from "./componentes/BarraNavegacao";
 import { ArmazenamentoPessoalProvider } from "./contextos/ArmazenamentoPessoalContext";
 import { BuscaCatalogoProvider } from "./contextos/BuscaCatalogoContext";
 import PaginaCatalogo from "./paginas/PaginaCatalogo";
-import PaginaDetalheJogo from "./paginas/PaginaDetalheJogo";
-import PaginaFavoritos from "./paginas/PaginaFavoritos";
-import PaginaMinhaLista from "./paginas/PaginaMinhaLista";
+
+const PaginaDetalheJogo = lazy(() => import("./paginas/PaginaDetalheJogo"));
+const PaginaFavoritos = lazy(() => import("./paginas/PaginaFavoritos"));
+const PaginaMinhaLista = lazy(() => import("./paginas/PaginaMinhaLista"));
+
+function CarregandoRota() {
+  return (
+    <Box display="flex" justifyContent="center" py={8}>
+      <CircularProgress aria-label="Carregando página" />
+    </Box>
+  );
+}
 
 function RotaDetalheJogo() {
   const { id } = useParams();
@@ -23,9 +33,30 @@ function App() {
           <BarraNavegacao />
           <Routes>
             <Route path="/" element={<PaginaCatalogo />} />
-            <Route path="/favoritos" element={<PaginaFavoritos />} />
-            <Route path="/minha-lista" element={<PaginaMinhaLista />} />
-            <Route path="/jogo/:id" element={<RotaDetalheJogo />} />
+            <Route
+              path="/favoritos"
+              element={
+                <Suspense fallback={<CarregandoRota />}>
+                  <PaginaFavoritos />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/minha-lista"
+              element={
+                <Suspense fallback={<CarregandoRota />}>
+                  <PaginaMinhaLista />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/jogo/:id"
+              element={
+                <Suspense fallback={<CarregandoRota />}>
+                  <RotaDetalheJogo />
+                </Suspense>
+              }
+            />
           </Routes>
         </Box>
       </ArmazenamentoPessoalProvider>

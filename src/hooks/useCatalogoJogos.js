@@ -30,13 +30,11 @@ function useCatalogoJogos() {
   }, [textoBusca]);
 
   useEffect(() => {
-    let consultaCancelada = false;
+    const controlador = new AbortController();
 
     async function carregarJogos() {
       setCarregandoInicial(true);
       setMensagemErro(null);
-      setJogos([]);
-      setTemMais(false);
 
       try {
         const resultado = await buscarJogos({
@@ -45,22 +43,25 @@ function useCatalogoJogos() {
           offset: 0,
           limite: LIMITE_POR_PAGINA,
           filtros,
+          signal: controlador.signal,
         });
 
-        if (!consultaCancelada) {
+        if (!controlador.signal.aborted) {
           setJogos(resultado.jogos);
           setTemMais(resultado.temMais);
         }
-      } catch {
-        if (!consultaCancelada) {
-          setJogos([]);
-          setTemMais(false);
-          setMensagemErro(
-            "Não foi possível carregar os jogos. Verifique se o backend está rodando."
-          );
+      } catch (erro) {
+        if (controlador.signal.aborted || erro.name === "AbortError") {
+          return;
         }
+
+        setJogos([]);
+        setTemMais(false);
+        setMensagemErro(
+          "Não foi possível carregar os jogos. Verifique se o backend está rodando."
+        );
       } finally {
-        if (!consultaCancelada) {
+        if (!controlador.signal.aborted) {
           setCarregandoInicial(false);
         }
       }
@@ -69,7 +70,7 @@ function useCatalogoJogos() {
     carregarJogos();
 
     return () => {
-      consultaCancelada = true;
+      controlador.abort();
     };
   }, [termoConsulta, ordenacao, filtros, chaveRecarga]);
 

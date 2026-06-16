@@ -87,7 +87,7 @@ function SecaoCatalogo({
         </Alert>
       )}
 
-      {carregandoInicial ? (
+      {carregandoInicial && jogos.length === 0 ? (
         <Box
           sx={ESTILO_GRADE_CATALOGO}
           aria-busy="true"
@@ -108,9 +108,12 @@ function SecaoCatalogo({
             role="list"
             aria-label="Lista de jogos digitais"
           >
-            {jogos.map((dadosJogo) => (
+            {jogos.map((dadosJogo, indice) => (
               <Box key={dadosJogo.identificador} role="listitem">
-                <CartaoJogo dadosJogo={dadosJogo} />
+                <CartaoJogo
+                  dadosJogo={dadosJogo}
+                  priorizarCarregamento={indice < 6}
+                />
               </Box>
             ))}
 

@@ -42,6 +42,7 @@ function CartaoJogo({
   dadosJogo,
   origem = "catalogo",
   exibirFavorito = true,
+  priorizarCarregamento = false,
   aoEditar,
   aoExcluir,
 }) {
@@ -57,7 +58,7 @@ function CartaoJogo({
       component="img"
       image={dadosJogo.urlImagemCapa}
       alt={`Capa do jogo ${dadosJogo.titulo}`}
-      loading="lazy"
+      loading={priorizarCarregamento ? "eager" : "lazy"}
       onError={() => setErroImagem(true)}
       sx={{ aspectRatio: "3 / 4", objectFit: "cover" }}
     />

@@ -30,6 +30,7 @@ async function buscarJogos({
   offset = 0,
   limite = LIMITE_POR_PAGINA,
   filtros = {},
+  signal,
 }) {
   const parametros = new URLSearchParams({
     ordenar: ordenacao,
@@ -44,7 +45,8 @@ async function buscarJogos({
   adicionarFiltrosAosParametros(parametros, filtros);
 
   const resposta = await fetch(
-    montarUrlApi(`/api/jogos?${parametros.toString()}`)
+    montarUrlApi(`/api/jogos?${parametros.toString()}`),
+    { signal }
   );
 
   if (!resposta.ok) {

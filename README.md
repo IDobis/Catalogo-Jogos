@@ -63,13 +63,14 @@ Catalogo-Jogos/
 - Cache em memória das respostas da IGDB (TTL configurável via `CACHE_IGDB_TTL_MS`)
 - Cache mais longo para PopScore (`CACHE_IGDB_POPSCORE_TTL_MS`, padrão 1 h) e pré-aquecimento do token Twitch ao iniciar o backend
 - Carregamento inicial mais leve: rotas secundárias com `React.lazy`, cancelamento de requisições duplicadas (`AbortController`), capas visíveis com prioridade e `preconnect` às imagens da IGDB
+- Layout otimizado e responsivo para mobile.
 - Testes básicos no frontend e backend (`npm run test:ci`)
 
 ## Futuras Ideias
 
 - Traduzir a descrição dos jogos para português (pt-BR(Provavelmente será necessário o uso de outra API))
 - Testes end-to-end para automatizar os testes (está ficando cansaivo avaliar coisa por coisa após uma leve mudança em como se comporta um efeito de abrir um modal)
-- Otimizar layout para mobile (Arrumar o layout, está pútrido)
+- Migrar de CRA para NEXT
 - Deploy do frontend e backend para ficar disponível ao público (Último)
 
 ## Necessário para Rodar o Projeto
@@ -109,6 +110,7 @@ npm install
 
 # Frontend — na raiz do projeto
 npm install
+npm audit fix --force
 
 # Subir backend e frontend juntos
 npm run dev
@@ -118,6 +120,13 @@ Também é possível rodar em terminais separados (`npm start` no `backend/` e n
 
 O backend sobe em [http://localhost:3001](http://localhost:3001).
 O aplicativo abre em [http://localhost:3000](http://localhost:3000).
+
+Caso houver erro no Front, verifique react-scripts no package-lock.json
+Modo correto:
+
+``` bash
+"react-scripts": "^5.0.1"
+```
 
 ## Fontes de Informações
 

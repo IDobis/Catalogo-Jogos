@@ -1,10 +1,20 @@
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import { useCallback, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { AppBar, Box, Container, IconButton, Toolbar, Tooltip, Typography } from "@mui/material";
+import {
+  AppBar,
+  Box,
+  Collapse,
+  Container,
+  IconButton,
+  Toolbar,
+  Tooltip,
+} from "@mui/material";
 import { alpha, keyframes } from "@mui/material/styles";
 import { linkPadraoPulante } from "../constantes/estilosBotao";
+import { CHAVE_NAVBAR_EXPANDIDA } from "../constantes/layoutCatalogo";
 import { useBuscaCatalogo } from "../contextos/BuscaCatalogoContext";
 import { useTema } from "../contextos/TemaContext";
 import CampoBuscaPorTitulo from "./CampoBuscaPorTitulo";
@@ -19,10 +29,12 @@ const estiloLinkBase = {
   display: "inline-block",
   color: "text.secondary",
   textDecoration: "none",
-  px: 1.5,
+  px: { xs: 1, sm: 1.5 },
   py: 0.75,
   borderRadius: 1,
   fontWeight: 500,
+  fontSize: { xs: "0.875rem", sm: "1rem" },
+  whiteSpace: "nowrap",
   ...linkPadraoPulante(),
   "&:hover": {
     ...linkPadraoPulante()["&:hover"],
@@ -96,8 +108,31 @@ function BotaoAlternarTema() {
   );
 }
 
+function lerPreferenciaNavbarExpandida() {
+  try {
+    const valor = localStorage.getItem(CHAVE_NAVBAR_EXPANDIDA);
+
+    if (valor === null) {
+      return true;
+    }
+
+    return valor === "true";
+  } catch {
+    return true;
+  }
+}
+
 function BarraNavegacao() {
   const { textoBusca, setTextoBusca } = useBuscaCatalogo();
+  const [navbarExpandida, setNavbarExpandida] = useState(lerPreferenciaNavbarExpandida);
+
+  const alternarNavbar = useCallback(() => {
+    setNavbarExpandida((valorAtual) => {
+      const proximoValor = !valorAtual;
+      localStorage.setItem(CHAVE_NAVBAR_EXPANDIDA, String(proximoValor));
+      return proximoValor;
+    });
+  }, []);
 
   return (
     <AppBar
@@ -117,56 +152,85 @@ function BarraNavegacao() {
             ? `0 4px 24px ${alpha(theme.palette.common.black, 0.35)}`
             : `0 4px 24px ${alpha(theme.palette.primary.main, 0.08)}`,
       })}
-    >      <Container maxWidth="lg">
-        <Toolbar disableGutters sx={{ py: 1, flexWrap: "nowrap" }}>
-          <Typography
-            component={NavLink}
-            to="/"
-            variant="h6"
+    >
+      <Container maxWidth="lg">
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            py: { xs: 0.5, md: 0.25 },
+          }}
+        >
+          <Tooltip title={navbarExpandida ? "Esconder navegação" : "Mostrar navegação"}>
+            <IconButton
+              onClick={alternarNavbar}
+              color="primary"
+              aria-expanded={navbarExpandida}
+              aria-controls="conteudo-navbar"
+              aria-label={navbarExpandida ? "Esconder navegação" : "Mostrar navegação"}
+              sx={{
+                "&:hover": {
+                  bgcolor: (theme) => alpha(theme.palette.primary.main, 0.08),
+                },
+              }}
+            >
+              <MenuOpenIcon />
+            </IconButton>
+          </Tooltip>
+
+          <BotaoAlternarTema />
+        </Box>
+
+        <Collapse in={navbarExpandida} id="conteudo-navbar">
+          <Toolbar
+            disableGutters
             sx={{
-              color: "text.primary",
-              textDecoration: "none",
-              fontWeight: 700,
-              mr: { sm: 1 },
-              flexShrink: 0,
+              pb: { xs: 1.25, md: 1 },
+              pt: 0,
+              flexDirection: { xs: "column", md: "row" },
+              alignItems: { xs: "stretch", md: "center" },
+              gap: { xs: 1.25, md: 0 },
             }}
           >
-            Catálogo
-          </Typography>
+            <Box
+              component="nav"
+              aria-label="Navegação principal"
+              sx={{
+                display: "flex",
+                gap: 0.5,
+                flexShrink: 0,
+                width: { xs: "100%", md: "auto" },
+                mr: { md: 2 },
+                overflowX: { xs: "auto", md: "visible" },
+                justifyContent: { xs: "center", md: "flex-start" },
+                WebkitOverflowScrolling: "touch",
+                scrollbarWidth: "none",
+                "&::-webkit-scrollbar": { display: "none" },
+              }}
+            >
+              <ItemNavegacao to="/" end>
+                Início
+              </ItemNavegacao>
+              <ItemNavegacao to="/favoritos">Favoritos</ItemNavegacao>
+              <ItemNavegacao to="/minha-lista">Minha Lista</ItemNavegacao>
+            </Box>
 
-          <Box
-            component="nav"
-            aria-label="Navegação principal"
-            display="flex"
-            gap={0.5}
-            flexShrink={0}
-          >
-            <ItemNavegacao to="/" end>
-              Início
-            </ItemNavegacao>
-            <ItemNavegacao to="/favoritos">Favoritos</ItemNavegacao>
-            <ItemNavegacao to="/minha-lista">Minha Lista</ItemNavegacao>
-          </Box>
-
-          <Box
-            sx={{
-              flex: 1,
-              minWidth: 0,
-              ml: "30px",
-              mr: "30px",
-            }}
-          >
-            <CampoBuscaPorTitulo
-              valor={textoBusca}
-              aoAlterar={setTextoBusca}
-              compacto
-            />
-          </Box>
-
-          <Box sx={{ flexShrink: 0 }}>
-            <BotaoAlternarTema />
-          </Box>
-        </Toolbar>
+            <Box
+              sx={{
+                flex: { md: 1 },
+                minWidth: 0,
+                width: { xs: "100%", md: "auto" },
+              }}
+            >
+              <CampoBuscaPorTitulo
+                valor={textoBusca}
+                aoAlterar={setTextoBusca}
+                compacto
+              />
+            </Box>
+          </Toolbar>
+        </Collapse>
       </Container>
     </AppBar>
   );

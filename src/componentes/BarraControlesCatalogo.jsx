@@ -35,8 +35,13 @@ function BarraControlesCatalogo({
       gap={2}
       mb={3}
     >
-      <Box>
-        <Typography component="h2" id="tituloSecaoCatalogo" variant="h5">
+      <Box sx={{ minWidth: 0 }}>
+        <Typography
+          component="h2"
+          id="tituloSecaoCatalogo"
+          variant="h5"
+          sx={{ typography: { xs: "h6", sm: "h5" } }}
+        >
           Jogos disponíveis
         </Typography>
         <Typography
@@ -49,7 +54,7 @@ function BarraControlesCatalogo({
         </Typography>
       </Box>
 
-      <FormControl size="small" sx={{ minWidth: 220 }}>
+      <FormControl size="small" sx={{ minWidth: { xs: "100%", sm: 220 } }}>
         <InputLabel id="rotuloOrdenacaoCatalogo">Ordenar por</InputLabel>
         <Select
           labelId="rotuloOrdenacaoCatalogo"

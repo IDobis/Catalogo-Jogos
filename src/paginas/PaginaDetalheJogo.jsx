@@ -158,12 +158,22 @@ function PaginaDetalheJogo({ identificador }) {
             <Box>
               <Box
                 display="flex"
-                alignItems="flex-start"
+                flexDirection={{ xs: "column", sm: "row" }}
+                alignItems={{ xs: "flex-start", sm: "flex-start" }}
                 justifyContent="space-between"
-                gap={2}
+                gap={1.5}
                 mb={1}
               >
-                <Typography component="h1" variant="h3" gutterBottom sx={{ mb: 0 }}>
+                <Typography
+                  component="h1"
+                  variant="h3"
+                  gutterBottom
+                  sx={{
+                    mb: 0,
+                    typography: { xs: "h5", sm: "h4", md: "h3" },
+                    wordBreak: "break-word",
+                  }}
+                >
                   {jogo.titulo}
                 </Typography>
                 <BotaoFavorito dadosJogo={jogo} tamanho="medium" />

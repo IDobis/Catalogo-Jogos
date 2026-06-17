@@ -17,7 +17,12 @@ function PaginaFavoritos() {
         mb={4}
       >
         <Box>
-          <Typography component="h1" variant="h4" gutterBottom>
+          <Typography
+            component="h1"
+            variant="h4"
+            gutterBottom
+            sx={{ typography: { xs: "h5", sm: "h4" } }}
+          >
             Favoritos
           </Typography>
           <Typography variant="body1" color="text.secondary">

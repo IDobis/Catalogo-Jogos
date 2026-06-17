@@ -485,7 +485,12 @@ function SecaoMidiaDetalheJogo({ trailers = [], screenshots = [], tituloJogo }) 
 
   return (
     <Box component="section" aria-label={tituloSecao} mt={4}>
-      <Typography component="h2" variant="h5" gutterBottom>
+      <Typography
+        component="h2"
+        variant="h5"
+        gutterBottom
+        sx={{ typography: { xs: "h6", sm: "h5" } }}
+      >
         {tituloSecao}
       </Typography>
 

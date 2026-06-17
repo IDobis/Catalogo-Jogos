@@ -45,26 +45,6 @@ Catalogo-Jogos/
 └── README.md
 ```
 
-## Como executar
-
-```bash
-# Backend — credenciais Twitch
-cd backend
-cp .env.example .env
-npm install
-
-# Frontend — na raiz do projeto
-npm install
-
-# Subir backend e frontend juntos
-npm run dev
-```
-
-Também é possível rodar em terminais separados (`npm start` no `backend/` e na raiz).
-
-O backend sobe em [http://localhost:3001](http://localhost:3001).
-O aplicativo abre em [http://localhost:3000](http://localhost:3000).
-
 ## Estado atual
 
 - Listagem de jogos em grade responsiva (dados da IGDB)
@@ -91,6 +71,53 @@ O aplicativo abre em [http://localhost:3000](http://localhost:3000).
 - Testes end-to-end para automatizar os testes (está ficando cansaivo avaliar coisa por coisa após uma leve mudança em como se comporta um efeito de abrir um modal)
 - Otimizar layout para mobile (Arrumar o layout, está pútrido)
 - Deploy do frontend e backend para ficar disponível ao público (Último)
+
+## Necessário para Rodar o Projeto
+
+Em uma máquina nova (com apenas o Vscode), instale antes de seguir o Como executar:
+
+- **Git** — [git-scm.com/downloads](https://git-scm.com/downloads)
+- **Node.js LTS** (18 ou superior) — [nodejs.org](https://nodejs.org/) (já inclui o `npm`)
+- **Navegador** — Chrome, Firefox ou Edge
+
+Clone o repositório:
+
+```bash
+git clone https://github.com/IDobis/Catalogo-Jogos.git
+cd Catalogo-Jogos
+```
+
+### Credenciais Twitch
+
+O backend consome a API IGDB via OAuth da Twitch. Sem **Client ID** e **Client Secret**, a listagem de jogos não funciona.
+
+1. Crie um app em [dev.twitch.tv/console/apps](https://dev.twitch.tv/console/apps)
+2. Em **OAuth Redirect URLs**, use `http://localhost:3000`
+3. Preencha `TWITCH_CLIENT_ID` e `TWITCH_CLIENT_SECRET` no `backend/.env`
+
+Em desenvolvimento, não é necessário criar `.env` na raiz do projeto — o proxy do `package.json` já aponta para o backend.
+
+**Não é necessário:** banco de dados, Docker ou conta paga na Twitch.
+
+## Como executar
+
+```bash
+# Backend — credenciais Twitch
+cd backend
+cp .env.example .env
+npm install
+
+# Frontend — na raiz do projeto
+npm install
+
+# Subir backend e frontend juntos
+npm run dev
+```
+
+Também é possível rodar em terminais separados (`npm start` no `backend/` e na raiz).
+
+O backend sobe em [http://localhost:3001](http://localhost:3001).
+O aplicativo abre em [http://localhost:3000](http://localhost:3000).
 
 ## Fontes de Informações
 
